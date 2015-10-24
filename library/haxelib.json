@@ -1,0 +1,11 @@
+{
+  "name": "ndll",
+  "license": "LGPL",
+  "tags": ["neko","ndll"],
+  "description": "Neko smart NDLL searcher",
+  "contributors": ["yar3333"],
+  "releasenote": "First release.",
+  "version": "1.0.0",
+  "url": "https://bitbucket.org/yar3333/haxe-ndll",
+  "dependencies": {}
+}
