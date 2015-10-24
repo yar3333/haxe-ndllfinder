@@ -1,5 +1,5 @@
-Ndll haxe/neko library
-======================
+ndllfinder haxe/neko library
+============================
 
 The problem of the standard `neko.Lib.load()` is a bad library path detection in some cases.
 For example, if `ndll` loaded from neko.Web.cache() method then relative paths specified by NEKOPATH became unexpected.
