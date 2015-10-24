@@ -258,6 +258,10 @@ class Lib {
 	
 	public static function load(lib:String, prim:String, nargs:Int) : Dynamic
 	{
+		#if !macro
 		return loadInner(getPath(lib, true), prim, nargs);
+		#else
+		return loadInner(lib, prim, nargs);
+		#end
 	}
 }
