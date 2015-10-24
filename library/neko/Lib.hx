@@ -21,12 +21,18 @@
  */
 package neko;
 
+import haxe.io.Path;
+import neko.vm.Loader;
+import neko.vm.Module;
+import sys.FileSystem;
+using StringTools;
+
 class Lib {
 
 	/**
 		Load and return a Neko primitive from a NDLL library.
 	**/
-	public static function load( lib : String, prim : String, nargs : Int ) : Dynamic {
+	static function loadInner( lib : String, prim : String, nargs : Int ) : Dynamic {
 		return untyped __dollar__loader.loadprim((lib+"@"+prim).__s,nargs);
 	}
 
@@ -176,8 +182,82 @@ class Lib {
 	public inline static function bytesReference( s : String ) : haxe.io.Bytes {
 		return untyped new haxe.io.Bytes( s.length, s.__s );
 	}
-
-	static var __serialize = load("std","serialize",1);
-	static var __unserialize = load("std","unserialize",2);
-
+	
+	static var __serialize = loadInner("std","serialize",1);
+	static var __unserialize = loadInner("std","unserialize",2);
+	
+	
+	static var baseDir : String;
+	static var systemName : String;
+	static var paths : Map<String, String>;
+	
+	/**
+	 * Search for ndll file by library name. Returns path without ".ndll" extension.
+	 * Paths to test: 
+	 * 		1) <dir_of_*.n_file>/<name>-<platform>.ndll // for example: "c:/dir/curl-windows64.ndll";
+	 * 		2) <dir_of_*.n_file>/ndll/<Platform>/<name>.ndll // for example: "c:/dir/ndll/Windows64/curl.ndll";
+	 * 		3) <std_paths_(NEKOPATH)>/<name>.ndll;
+	 * 		4) <path_from_haxelib>/ndll/<Platform>/<name>.ndll // C:/motion-twin/haxe/lib/hant/1,5,2/ndll/Windows64/hant.ndll.
+	 */
+	public static function getPath(lib:String, throwNotFound=false) : String
+	{
+		if (paths == null) paths = new Map<String, String>();
+		
+		if (paths.exists(lib)) return paths.get(lib);
+		
+		if (baseDir == null)
+		{
+			var moduleName = Module.local().name;
+			baseDir = Path.directory(moduleName != "" ? moduleName : Sys.executablePath());
+			if (baseDir == "") baseDir = ".";
+			baseDir = FileSystem.fullPath(baseDir);
+		}
+		
+		var testedPaths = [];
+		
+		if (systemName == null)
+		{
+			systemName = "" + Sys.systemName() + (loadInner("std", "sys_is64", 0)() ? "64" : "");
+		}
+		
+		{
+			var s = baseDir + "/" + lib + "-" + systemName.toLowerCase();
+			if (FileSystem.exists(s + ".ndll"))
+			{
+				paths.set(lib, s);
+				return s;
+			}
+			testedPaths.push(s);
+		}
+		
+		{
+			var s = baseDir + "/ndll/" + systemName + "/" + lib;
+			if (FileSystem.exists(s + ".ndll"))
+			{
+				paths.set(lib, s);
+				return s;
+			}
+			testedPaths.push(s);
+		}
+		
+		for (path in Loader.local().getPath())
+		{
+			var s = Path.addTrailingSlash(path) + lib;
+			if (FileSystem.exists(s + ".ndll"))
+			{
+				paths.set(lib, s);
+				return s;
+			}
+			testedPaths.push(s);
+		}
+		
+		if (throwNotFound) throw "Ndll flle for library '" + lib + "' is not found. Tested paths = " + testedPaths + ".";
+		
+		return null;
+	}
+	
+	public static function load(lib:String, prim:String, nargs:Int) : Dynamic
+	{
+		return loadInner(getPath(lib, true), prim, nargs);
+	}
 }
