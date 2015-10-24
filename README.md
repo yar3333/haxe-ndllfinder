@@ -7,7 +7,7 @@ Just compile your project with this library to use the smart searching of the nd
 
 CAUTION: this library override neko.Lib class so it may be incompatible with libraries which do the same thing.
 
-`neko.load("myModule", ..., ...)` check next paths (example for Windows platform):
+Fixed `neko.Lib.load("myModule", ..., ...)` check next paths (example for Windows platform):
 
  1. **FOLDER_OF_CURRENT_MODULE** / myModule-windows.ndll
  2. **FOLDER_OF_CURRENT_MODULE** / ndll / Windows / myModule.ndll
