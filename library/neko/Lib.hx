@@ -201,6 +201,8 @@ class Lib {
 	 */
 	public static function getPath(lib:String, throwNotFound=false) : String
 	{
+		if (lib == "std") return lib;
+		
 		if (paths == null) paths = new Map<String, String>();
 		
 		if (paths.exists(lib)) return paths.get(lib);
@@ -253,10 +255,10 @@ class Lib {
 		
 		if (throwNotFound) throw "Ndll flle for library '" + lib + "' is not found. Tested paths = " + testedPaths + ".";
 		
-		return null;
+		return lib;
 	}
 	
-	public static function load(lib:String, prim:String, nargs:Int) : Dynamic
+	public static inline function load(lib:String, prim:String, nargs:Int) : Dynamic
 	{
 		#if !macro
 		return loadInner(getPath(lib, true), prim, nargs);
