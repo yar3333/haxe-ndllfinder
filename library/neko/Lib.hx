@@ -201,7 +201,7 @@ class Lib {
 	 */
 	public static function getPath(lib:String, throwNotFound=false) : String
 	{
-		if (lib == "std") return lib;
+		if (lib == "std" || StringTools.startsWith(lib, "mod_neko")) return lib;
 		
 		if (paths == null) paths = new Map<String, String>();
 		
