@@ -210,7 +210,7 @@ class Lib {
 		if (baseDir == null)
 		{
 			var moduleName = Module.local().name;
-			baseDir = Path.directory(moduleName != "" ? moduleName : Sys.executablePath());
+			baseDir = Path.directory(moduleName != "" ? moduleName : Sys.programPath());
 			if (baseDir == "") baseDir = ".";
 			baseDir = FileSystem.fullPath(baseDir);
 		}
