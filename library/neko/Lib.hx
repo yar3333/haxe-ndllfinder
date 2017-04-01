@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2012 Haxe Foundation
+ * Copyright (C)2005-2017 Haxe Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,6 +20,12 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package neko;
+
+/**
+	Platform-specific Neko Library. Provides some platform-specific functions 
+	for the Neko target, such as conversion from Haxe types to native types 
+	and vice-versa.
+**/
 
 import haxe.io.Path;
 import neko.vm.Loader;
@@ -75,14 +81,14 @@ class Lib {
 	}
 
 	/**
-		Unserialize a string using native Neko serialization. See [serialize].
+		Unserialize a string using native Neko serialization. See `serialize`.
 	**/
 	public static function unserialize( s : haxe.io.Bytes ) : Dynamic {
 		return untyped __unserialize(s.getData(),__dollar__loader);
 	}
 
 	/**
-		Unserialize a string using native Neko serialization. See [serialize].
+		Unserialize a string using native Neko serialization. See `serialize`.
 		This function assume that all the serialized data was serialized with current
 		module, even if the module name was different. This can happen if you are unserializing
 		some data into mod_neko that was serialized on a different server using a different
