@@ -4,8 +4,8 @@
   "tags": ["neko","ndll"],
   "description": "Neko smart NDLL finder",
   "contributors": ["yar3333"],
-  "releasenote": "Several improvements. Exclude \"mod_neko*.ndll\" from searching.",
-  "version": "1.1.0",
+  "releasenote": "Haxe 3.4.0 support.",
+  "version": "1.1.1",
   "url": "https://bitbucket.org/yar3333/haxe-ndllfinder",
   "dependencies": {}
 }
