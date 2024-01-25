@@ -6,6 +6,6 @@
   "contributors": ["yar3333"],
   "releasenote": "Haxe 3.4.0 support.",
   "version": "1.1.1",
-  "url": "https://bitbucket.org/yar3333/haxe-ndllfinder",
+  "url": "https://github.com/yar3333/haxe-ndllfinder",
   "dependencies": {}
 }
